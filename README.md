@@ -1,3 +1,5 @@
+## *Disclaimer: this is a copy of Jonas Schmedtmann's Complete Node Bootcamp. All Credits to him on creating the content present in this repo. Everything below this point was written by him.*
+
 # Course Material and FAQ for my Complete Node.js, Express and MongoDB Bootcamp
 
 This repo contains starter files and the finished project files for all the projects contained in the course (complete repo size is **288MB**).
