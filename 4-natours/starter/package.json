@@ -4,7 +4,7 @@
   "description": "Complete Node bootcamp, main API",
   "main": "app.js",
   "scripts": {
-    "test": "nodemon app.js"
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -23,7 +23,8 @@
   },
   "homepage": "https://github.com/nearlyerika/complete-node-bootcamp#readme",
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
