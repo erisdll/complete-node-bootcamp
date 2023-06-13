@@ -8,6 +8,7 @@ const app = express();
 // MIDDLEWARES
 app.use(morgan('dev'))
 app.use(express.json());
+app.use(express.static(`${__dirname}/public`))
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
