@@ -14,21 +14,21 @@ exports.createTour = catchAsync(async (req, res, next) => {
   const newTour = await Tour.create(req.body);
 
   res.status(201).json({
-    status: 'Success!',
+    status: 'success',
     data: {
-      newTour,
+      tour: newTour,
     },
   });
 });
 
+
+// EXECUTE QUERY
 exports.getAllTours = catchAsync(async (req, res, next) => {
-  // EXECUTE QUERY
   const features = new APIFeatures(Tour.find(), req.query)
     .filter()
     .sort()
     .limitFields()
     .paginate();
-
   const tours = await features.query;
   // SEND RESPONSE
   res.status(200).json({
@@ -44,7 +44,7 @@ exports.getTour = catchAsync(async (req, res, next) => {
   const tour = await Tour.findById(req.params.id);
 
   if (!tour) {
-    return next(new AppError('No tour found with that ID!', 404))
+    return next(new AppError('No tour found with that ID!', 404));
   }
 
   res.status(200).json({
@@ -66,9 +66,9 @@ exports.updateTour = catchAsync(async (req, res, next) => {
   }
 
   res.status(200).json({
-    status: 'Success',
+    status: 'success',
     data: {
-      tour: tour,
+      tour,
     },
   });
 });
@@ -81,22 +81,22 @@ exports.deleteTour = catchAsync(async (req, res, next) => {
   }
 
   res.status(204).json({
-    status: 'Success',
+    status: 'success',
     data: null,
   });
 });
 
 exports.getTourStats = catchAsync(async (req, res, next) => {
-  const stats = Tour.aggregate([
+  const stats = await Tour.aggregate([
     {
-      $match: {ratingsAvarage: {$gte: 4.5}},
+      $match: {ratingsAverage: {$gte: 4.5}},
     },
     {
       $group: {
         _id: {$toUpper: '$difficulty'},
-        num: {$sum: 1},
+        numTours: {$sum: 1},
         numRatings: {$sum: '$ratingsQuantity'},
-        avgRating: {$avg: '$ratingsAvarage'},
+        avgRating: {$avg: '$ratingsAverage'},
         avgPrice: {$avg: '$price'},
         minPrice: {$min: '$price'},
         maxPrice: {$max: '$price'},
@@ -106,9 +106,8 @@ exports.getTourStats = catchAsync(async (req, res, next) => {
       sort: {avgPrice: 1},
     },
   ]);
-
   res.status(200).json({
-    status: 'Success',
+    status: 'success',
     data: {
       stats,
     },
@@ -131,9 +130,9 @@ exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
     },
     {
       $group: {
-        _id: {$month: '$startDates'},
-        numTourStarts: {$sum: 1},
-        tours: {$push: {$name}},
+        _id: { $month: '$startDates' },
+        numTourStarts: { $sum: 1 },
+        tours: { $push: '$name' },
       },
     },
     {

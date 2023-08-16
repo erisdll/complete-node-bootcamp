@@ -119,7 +119,7 @@ tourSchema.pre('aggregate', function (next) {
   this.pileline().unshift({
     $match: {secretTour: {$ne: true}},
   });
-  console.log(thi.pileline());
+  console.log(this.pileline());
   next();
 });
 
