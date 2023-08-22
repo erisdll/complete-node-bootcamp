@@ -1,7 +1,7 @@
 const AppError = require('../utils/appError');
 const Tour = require('./../models/tourModel');
-const APIFeatures = require('./../utils/apiFeatures');
 const catchAsync = require('./../utils/catchAsync');
+const APIFeatures = require('./../utils/apiFeatures');
 
 exports.aliasTopTours = (req, res, next) => {
   req.query.limit = '5';
@@ -20,7 +20,6 @@ exports.createTour = catchAsync(async (req, res, next) => {
     },
   });
 });
-
 
 // EXECUTE QUERY
 exports.getAllTours = catchAsync(async (req, res, next) => {
@@ -130,9 +129,9 @@ exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
     },
     {
       $group: {
-        _id: { $month: '$startDates' },
-        numTourStarts: { $sum: 1 },
-        tours: { $push: '$name' },
+        _id: {$month: '$startDates'},
+        numTourStarts: {$sum: 1},
+        tours: {$push: '$name'},
       },
     },
     {
