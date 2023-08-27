@@ -24,14 +24,15 @@
   },
   "homepage": "https://github.com/nearlyerika/complete-node-bootcamp#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "morgan": "^1.10.0",
+    "jsonwebtoken": "9.0.1",
     "mongoose": "7.3.1",
+    "morgan": "^1.10.0",
+    "nodemailer": "^6.9.4",
     "slugify": "^1.6.6",
-    "validator": "^13.11.0",
-    "bcryptjs": "^2.4.3",
-    "jsonwebtoken": "9.0.1"
+    "validator": "^13.11.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
