@@ -6,10 +6,15 @@ const factory = require('../controllers/handlerFactory')
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
   Object.keys(obj).forEach(el => {
-    if(allowedFields.includes(el)) newObj[el] = obj[el]
+    if (allowedFields.includes(el)) newObj[el] = obj[el]
   })
   return newObj;
 }
+
+exports.getMe = (req, res, next) => {
+  req.params.id = req.user.id;
+  next();
+};
 
 exports.updateMe = catchAsync(async (req, res, next) => {
   // 1) Create error if user POSTs password data
@@ -20,7 +25,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
         400,
       ),
     );
-  }
+  };
 
   // 2) Filter out unwanted field names that are not allowed to be updated
   const filteredBody = filterObj(req.body, 'name', 'email');
