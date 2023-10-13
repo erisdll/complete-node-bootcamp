@@ -33,6 +33,8 @@ const reviewSchema = new mongoose.Schema(
   },
 );
 
+// METHODS
+
 reviewSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'user',
