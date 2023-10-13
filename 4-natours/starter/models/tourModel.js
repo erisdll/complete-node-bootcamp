@@ -114,6 +114,8 @@ const tourSchema = new mongoose.Schema(
   },
 );
 
+// METHODS
+
 tourSchema.index({ price: 1, ratingsAvarage: -1 })
 tourSchema.index({slug: 1});
 
@@ -121,7 +123,7 @@ tourSchema.virtual('durationWeeks').get(function () {
   return this.duration / 7;
 });
 
-// Vitual Populate
+// VIRTUAL POPULATE
 tourSchema.virtual('reviews', {
   ref: 'Review',
   foreignField: 'tour',
@@ -133,22 +135,6 @@ tourSchema.pre('save', function (next) {
   this.slug = slugify(this.name, {lower: true});
   next();
 });
-
-// tourSchema.pre('save', async function (next) {
-//   const guidesPromises = this.guides.map(async id => await User.findById(id))
-//   this.guids = await Promise.all(guidesPromises)
-//   next();
-// });
-
-// tourSchema.pre('save', function (next) {
-//   console.log('Will save document!')
-//   next();
-// })
-//
-// tourSchema.post('save', function (doc, next) {
-//   console.log(doc);
-//   next();
-// })
 
 // QUERY MIDDLEWARE
 tourSchema.pre(/^find/, function (next) {
