@@ -8,7 +8,7 @@ exports.getOverview = catchAsync(async (req, res) => {
 
   // 3) Render template using data from step 1
   res.status(200).render('base', {
-    title: 'All Tours'
+    title: 'All Tours',
     tours: tours
   });
 });
