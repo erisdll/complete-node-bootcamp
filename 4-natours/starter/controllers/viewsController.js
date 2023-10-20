@@ -7,14 +7,22 @@ exports.getOverview = catchAsync(async (req, res) => {
   // 2) Build template
 
   // 3) Render template using data from step 1
-  res.status(200).render('base', {
+  res.status(200).render('overview', {
     title: 'All Tours',
     tours: tours
   });
 });
 
-exports.getTour = (req, res) => {
-  res.status(200).render('base', {
+exports.getTour = catchAsync(async (req, res) => {
+  // 1) Get the datea for the requested tour (including reviews and guides)
+  const tour = await Tour.findOne({ slug: req.params.slug }).populate({
+    path: 'reviews',
+    fields: 'review rating user'
+  });
+  // 2) Build template
+
+  // 3) Render template using data  from step 1
+  res.status(200).render('tour', {
     tour: 'The Forest Hiker Tour'
   });
-};
+});
