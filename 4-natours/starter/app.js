@@ -18,34 +18,37 @@ const viewRouter = require('./routes/viewRoutes');
 const app = express();
 
 app.set('view engine', 'pug');
-app.set('views', path.join(__dirname, './views'));
+app.set('views', path.join(__dirname, 'views'));
 
 // 1) GLOBAL MIDDLEWARES
+// Serving static files
 app.use(express.static(path.join(__dirname, 'public')));
-// Set secure HTTP headers
+
+// Set security HTTP headers
 app.use(helmet());
 
-// Development Logging
+// Development logging
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-// API Rate Limiter
+// Limit requests from same API
 const limiter = rateLimit({
   max: 100,
-  windowMs: 3600 * 1000,
-  message: 'Too many requests from this IP, please try again later!',
+  windowMs: 60 * 60 * 1000,
+  message: 'Too many requests from this IP, please try again in an hour!'
 });
 app.use('/api', limiter);
 
-// Body Parser
-app.use(express.json({limit: '10kb'}));
-app.user(cookieParser());
+// Body parser, reading data from body into req.body
+app.use(express.json({ limit: '10kb' }));
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+app.use(cookieParser());
 
-// Data Sanitization agnst NoSQL query injections
+// Data sanitization against NoSQL query injection
 app.use(mongoSanitize());
 
-// Data sanitization agnst XSS
+// Data sanitization against XSS
 app.use(xss());
 
 // Prevent parameter pollution
@@ -53,18 +56,14 @@ app.use(
   hpp({
     whitelist: [
       'duration',
-      'ratingsQuantiy',
-      'ratingsAvarage',
-      'maxGroupeSize',
-      'dificulty',
-      'price',
-    ],
-  }),
+      'ratingsQuantity',
+      'ratingsAverage',
+      'maxGroupSize',
+      'difficulty',
+      'price'
+    ]
+  })
 );
-
-// Static file server
-app.use(express.static(`${__dirname}/public`));
-app.use(express.static(path.join(__dirname, 'public')));
 
 // Test middleware
 app.use((req, res, next) => {
@@ -74,7 +73,6 @@ app.use((req, res, next) => {
 });
 
 // 3) ROUTES
-
 app.use('/', viewRouter);
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
@@ -84,7 +82,6 @@ app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
 
-// ERROR HANDLING
 app.use(globalErrorHandler);
 
 module.exports = app;
